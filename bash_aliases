@@ -3,7 +3,7 @@ export EDITOR=/usr/bin/vim    # the one and only editor
 export HISTFILESIZE=300000    # save 300000 commands
 export HISTCONTROL=ignoredups    # no duplicate lines in the history.
 export HISTSIZE=100000
-export http_proxy=''
+export http_proxy='http://172.16.6.189:3128'
 export PATH=$PATH:/usr/sbin:/sbin
 
 # export PATH=/prepend/path:$PATH
