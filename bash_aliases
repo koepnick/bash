@@ -171,6 +171,15 @@ function monitor() #FNCT monitor - Monitor a particular directory or file (ls $1
 		done
 		
 	fi
+	if [ -d $1 ] ; then
+		while [ 1 -eq 1 ]
+		do
+			clear
+			ls -lah $1
+			sleep 2
+		done
+	fi
+		
 }
 function monitor_disk() #FNCT monitor_disk - Monitor attached disks /dev/sd*
 {
