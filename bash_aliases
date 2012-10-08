@@ -4,10 +4,16 @@ export HISTFILESIZE=300000    # save 300000 commands
 export HISTCONTROL=ignoredups    # no duplicate lines in the history.
 export HISTSIZE=100000
 export http_proxy=''
-export PATH=$PATH:/usr/sbin:/sbin
+export PATH=$PATH:/usr/sbin:/sbin:~/.opt/ec2-1.6.3.1/bin
 
 # export PATH=/prepend/path:$PATH
 # export PATH=$PATH:/postpend/path
+
+## EC2 Stuff
+export EC2_PRIVATE_KEY=$HOME/.aws/pk-KGGVLVDGNMSH2DGKV3C6FSRLCZQJREJZ.pem
+export EC2_CERT=$HOME/.aws/cert-KGGVLVDGNMSH2DGKV3C6FSRLCZQJREJZ.pem
+export EC2_HOME=$HOME/.opt/ec2-1.6.3.1
+export JAVA_HOME=`which java | sed 's|/bin/java||'`
 
 ## Set up persistent color displays
 if [[ -s ~/.bashdisplay ]] ; then
