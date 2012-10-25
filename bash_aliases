@@ -30,7 +30,12 @@ else
 	echo "user:0" > ~/.bashdisplay
 	echo "host:0" >> ~/.bashdisplay
 fi
-export TERM='xterm-256color'
+COLORS=$(tput colors)
+if [[ $COLORS -ge 256 ]] ; then
+	export TERM='xterm-256color'
+else
+	export TERM='linux'
+fi
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 #shopt -s checkwinsize
@@ -347,6 +352,10 @@ function e? # FNCT e? - Prints current environment data
 	echo Path - $PATH
 }
 ### ALIASES
+## Screen stuff
+alias screen-grid='screen -c ~/.screen/conf/grid'
+alias screen-full='screen -c ~/.screen/conf/full'
+
 
 ## Keeping things organized
 alias ll='ls -lah --color=auto'
