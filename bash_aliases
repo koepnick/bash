@@ -4,7 +4,7 @@ export HISTFILESIZE=300000    # save 300000 commands
 export HISTCONTROL=ignoredups    # no duplicate lines in the history.
 export HISTSIZE=100000
 export http_proxy=''
-export PATH=$PATH:/usr/sbin:/sbin:~/.opt/ec2-1.6.3.1/bin
+export PATH=$PATH:/usr/sbin:/sbin:~/.opt/ec2-1.6.3.1/bin:~/.opt/AutoScaling-1.0.61.1/bin:~/.opt/CloudWatch-1.0.13.4/bin:~/.opt/ec2-ami-tools-1.4.0.7/bin
 
 # export PATH=/prepend/path:$PATH
 # export PATH=$PATH:/postpend/path
@@ -13,6 +13,10 @@ export PATH=$PATH:/usr/sbin:/sbin:~/.opt/ec2-1.6.3.1/bin
 export EC2_PRIVATE_KEY=$HOME/.aws/pk-KGGVLVDGNMSH2DGKV3C6FSRLCZQJREJZ.pem
 export EC2_CERT=$HOME/.aws/cert-KGGVLVDGNMSH2DGKV3C6FSRLCZQJREJZ.pem
 export EC2_HOME=$HOME/.opt/ec2-1.6.3.1
+export EC2_URL="https://us-west-1.ec2.amazonaws.com/"
+export AWS_AUTO_SCALING_HOME=$HOME/.opt/AutoScaling-1.0.61.1
+export AWS_CLOUDWATCH_HOME=$HOME/.opt/CloudWatch-1.0.13.4
+export EC2_AMITOOL_HOME=$HOME/.opt/ec2-ami-tools-1.4.0.7
 export JAVA_HOME=`which java | sed 's|/bin/java||'`
 
 ## Set up persistent color displays
@@ -26,7 +30,12 @@ else
 	echo "user:0" > ~/.bashdisplay
 	echo "host:0" >> ~/.bashdisplay
 fi
-export TERM='xterm-256color'
+COLORS=$(tput colors)
+if [[ $COLORS -ge 256 ]] ; then
+	export TERM='xterm-256color'
+else
+	export TERM='linux'
+fi
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 #shopt -s checkwinsize
@@ -307,6 +316,27 @@ done
 }
 # Displays metadata for specified media file
 #   $1 = media file name
+
+function toMP4() #FNCT toMP4 - Converts the input file to a high profile mp4
+{
+	if [ -z "$2" ] ; then
+		CRF=14
+	else
+		CRF=$2
+	fi
+	filename=$(basename "$1")
+	extension="${filename##*.}"
+	filename="${filename%.*}"
+	newext=".mkv"
+	newname="$filename$newext"
+	if [ "$extension" == "mp4" ] ; then
+		newname="$filename-new.mkv"
+	fi
+	echo "Will convert $1 to $newname"
+	echo -e "With ffmpeg -i \"$1\" -vcodec libx264 -preset slow -crf $CRF -threads 0 -acodec libfaac -tune film -ab 160k \"$newname\""
+	ffmpeg -i "$1" -vcodec libx264 -preset veryslow -crf $CRF -threads 0 -acodec libfaac -tune film -ab 160k "$newname"
+}
+
 function i() { # FNCT i - Displays information about mp3 file $1
     EXT=`echo "${1##*.}" | sed 's/\(.*\)/\L\1/'`
     if [ "$EXT" == "mp3" ]; then
@@ -329,6 +359,10 @@ function e? # FNCT e? - Prints current environment data
 	echo Path - $PATH
 }
 ### ALIASES
+## Screen stuff
+alias screen-grid='screen -c ~/.screen/conf/grid'
+alias screen-full='screen -c ~/.screen/conf/full'
+
 
 ## Keeping things organized
 alias ll='ls -lah --color=auto'
