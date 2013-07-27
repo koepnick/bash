@@ -78,6 +78,13 @@ fi
 
 
 ### FUNCTIONS
+# Backup
+backup () { # FNCT backup - Backs up $1 to $1.bak.YYYY-MM-DD_Time
+D=$(date +"%y-%m-%d_%T")
+cp $1 $1.bak.$D
+}
+
+
 # Easy extract
 extract () { # FNCT extract - Extracts $1 to CWD if: tar.bz2 tar.gz bz2 rar gz tar tbz2 tgz zip Z 7z
   if [ -f $1 ] ; then
